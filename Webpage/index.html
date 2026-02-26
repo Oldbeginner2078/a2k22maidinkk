@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Loading 10s</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Loading full screen */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.loading-screen {
+    position: fixed;
+    inset: 0;                 /* thay cho width + height */
+
+    background-image: url("../Asset/loading_background.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;   /* quan trọng nhất */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hộp chứa thanh load */
+.progress-container {
+    width: 400px;
+    height: 25px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Thanh load */
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ffcc, #00aaff);
+    transition: width 0.1s linear;
+}
+
+/* % hiển thị */
+.percent {
+    margin-top: 15px;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+
+/* Nội dung chính */
+.content {
+    display: none;
+    text-align: center;
+    padding: 50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="loading-screen" id="loading">
+    <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+    </div>
+    <div class="percent" id="percent">0%</div>
+</div>
+
+<div class="content" id="content">
+    <h1>Trang web đã tải xong!</h1>
+</div>
+
+<script>
+let progressBar = document.getElementById("progress");
+let percentText = document.getElementById("percent");
+let loadingScreen = document.getElementById("loading");
+let content = document.getElementById("content");
+
+let duration = 10000; // 10 giây
+let interval = 100;   // cập nhật mỗi 0.1 giây
+let step = 100 / (duration / interval);
+
+let current = 0;
+
+let timer = setInterval(() => {
+    current += step;
+
+    if (current >= 100) {
+        current = 100;
+        clearInterval(timer);
+
+        setTimeout(() => {
+            loadingScreen.style.display = "none";
+            content.style.display = "block";
+        }, 300);
+    }
+
+    progressBar.style.width = current + "%";
+    percentText.textContent = Math.floor(current) + "%";
+
+}, interval);
+</script>
+
+</body>
+</html>
